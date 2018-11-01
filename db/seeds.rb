@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # roles = Role.create([{title: 'Booking'}, {title: 'TourGuide'}, {title: 'Admin'}])
-# users = User.create([{first_name: 'Maya', last_name: 'Yadid', email: 'mayayadid@gmail.com', phone: '646-731-4919', password_digest: 'chelseatour'}, {first_name: 'Cole', last_name: 'Shapiro', email: 'colesayershapiro@gmail.com', phone: '615-579-2272', password_digest: 'chelseatour'}])
+# users = User.create([{first_name: 'Maya', last_name: 'Yadid', email: 'mayayadid@gmail.com', phone: '646-731-4919', password: 'chelseatour'}, {first_name: 'Cole', last_name: 'Shapiro', email: 'colesayershapiro@gmail.com', phone: '615-579-2272', password: 'chelseatour'}])
 # user_roles = UserRole.create([{user_id: 1, role_id: 3}, {user_id: 2, role_id: 3}])
 
 # locations = Location.create([{name: 'Lower East Side'}, {name: 'Soho'}, {name: 'Chelsea'}])

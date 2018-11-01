@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181101163723) do
+ActiveRecord::Schema.define(version: 20181101171239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,12 @@ ActiveRecord::Schema.define(version: 20181101163723) do
     t.string "phone"
     t.boolean "subscribed", default: false, null: false
     t.integer "note_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -69,13 +75,13 @@ ActiveRecord::Schema.define(version: 20181101163723) do
 
   create_table "tours", force: :cascade do |t|
     t.string "date"
-    t.string "name"
     t.decimal "base_price", precision: 8, scale: 2
     t.string "start_time"
     t.boolean "is_private", default: false, null: false
     t.integer "note_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "location_id"
   end
 
   create_table "user_roles", force: :cascade do |t|

@@ -1,0 +1,12 @@
+<% @tours.each do |tour| %>
+  <%=link_to tour_path(tour.id) do%>
+    <section>
+      <h3>Type: <%=tour.location.name%></h1>
+      <h2>Date: <%=tour.date%></h2>
+      <h2>Time: <%=tour.start_time%></h2>
+      <h3>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></h3>
+      <h3><%= tour.num_enrolled %></h3>
+      <hr>
+    </section>
+  <%end%>
+<% end %>

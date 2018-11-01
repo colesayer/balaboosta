@@ -1,0 +1,33 @@
+<h1>Hello, <%=@guest.first_name%></h1>
+
+<h2>Upcoming Tours</h2>
+<% @guest.tours.each do |tour| %>
+  <h3><%=tour.location.name + " - " + tour.date + " with " + @guest.num_guests(tour).to_s + " guests." if @guest.num_guests(tour)%></h3>
+  <%= link_to "Delete Reservation", "/guests/#{@guest.id}/remove_tour/#{tour.id}", method: 'delete', data: { confirm: "Really?" } %>
+  <%= link_to "Edit Reservation", "/guests/#{@guest.id}/edit_tour/#{tour.id}" %>
+<% end %>
+
+<h2>Add a Tour</h2>
+
+<%=form_tag "/guests/#{@guest.id}/add_tour" do %>
+
+  <%= label_tag 'Select a tour:' %>
+  <br>
+  <%= collection_select :tour, :id, Tour.all, :id, :formatted_name, {:prompt => true} %>
+  <br>
+  <br>
+  <%= label_tag 'Number of guests:' %>
+  <br>
+  <%= select_tag :num_guests, options_for_select(1..20) %>
+  <br>
+  <br>
+  <%= label_tag 'Booked by:' %>
+  <br>
+  <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:prompt => true} %>
+  <br>
+  <br>
+  <%= submit_tag "Add Tour", class: ''%>
+<%end%>
+<br>
+
+<%= link_to "Delete Guest", @guest, method: :delete, data: { confirm: "Really?" } %>

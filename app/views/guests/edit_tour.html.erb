@@ -1,0 +1,15 @@
+<h1>Edit <%=@guest.formatted_name%>'s <%=@tour.location.name%> Tour</h1>
+
+<%=form_tag "/guests/#{@guest.id}/edit_tour/#{@tour.id}" do %>
+  <%= label_tag 'Number of guests:' %>
+  <br>
+  <%= select_tag :num_guests, options_for_select((1..20), @tour_guest.num_guests) %>
+  <br>
+  <br>
+  <%= label_tag 'Booked by:' %>
+  <br>
+  <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:selected => @tour_guest.user_id} %>
+  <br>
+  <br>
+  <%= submit_tag "Update Tour", class: ''%>
+<%end%>

@@ -1,0 +1,11 @@
+<h1>Welcome to the <%=@tour.location.name%> Tour, on <%=@tour.date%> at <%=@tour.start_time%>.</h1>
+<h2>There are currently <%=@tour.num_enrolled%> guest enrolled.</h2>
+
+<% @tour.guests.each do |guest| %>
+  <p>Name: <%=guest.first_name + " " + guest.last_name%></p>
+  <p>Phone: <%= guest.phone%></p>
+  <p>Email: <%= guest.email%></p>
+  <p>Guests: <%= guest.num_guests(@tour) %>
+  <p>Booking: <%= guest.booked_by(@tour) %>
+  <hr>
+<%end%>

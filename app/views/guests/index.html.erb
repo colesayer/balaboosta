@@ -1,0 +1,8 @@
+<% @guests.each do |guest| %>
+<hgroup>
+  <h1><%= link_to guest.first_name + " " + guest.last_name, guest_path(guest.id) %></h1>
+  <h2><%= guest.email %></h2>
+  <h3><%= guest.phone %></h3>
+  <hr>
+</hgroup>
+<%end%>

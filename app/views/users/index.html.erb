@@ -1,8 +1,8 @@
 <p><%= link_to "+ Add User", new_user_path%></p>
-
+<%is_admin?%>
 <% @users.each do |user| %>
 <hgroup>
-  <h1><%= link_to user.first_name, user_path(user.id) %></h1>
+  <h1><%= link_to user.formatted_name, user_path(user.id) %></h1>
   <h2><%= user.email %></h2>
   <h3><%= user.phone %></h3>
   <hr>

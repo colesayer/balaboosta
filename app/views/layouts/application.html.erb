@@ -11,17 +11,21 @@
   <body>
     <div class="header-container" style="background-color: yellow;display: flex; justify-content: space-between; align-items: center; padding-right: 2%; padding-left: 2%">
       <div class="header-title">
-        <h1> Balaboosta </h1>
+        <h1><%= link_to "Balaboosta", '/'%> </h1>
       </div>
 
+      <% if logged_in? %>
       <div class="header-nav-container" style="width: 50%;">
         <ul style="list-style-type: none;margin: 0;padding: 0;">
-          <li style="float: right;"><%=link_to "Tours", tours_path%></li>
+          <li style="float: right;"><%=link_to "Logout", logout_path, method: "delete"%></li>
+          <li style="float: right;margin-right: 5%;"><%=link_to "Tours", tours_path%></li>
           <li style="float: right;margin-right: 5%;"><%=link_to "Guests", guests_path%></li>
           <li style="float: right;margin-right: 5%;"><%=link_to "Users", users_path%></li>
         </ul>
       </div>
+      <%end%>
     </div>
+
 
     <div class="body-container" style="padding-right: 2%; padding-left: 2%">
       <%= yield %>

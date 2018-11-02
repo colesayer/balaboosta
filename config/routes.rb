@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  root 'static#index'
+  root 'users#current_user_home'
   get 'about', to: 'static#about'
 
-  get 'login', to: 'sessions#new'
-  post 'login', to: 'sessions#create'
+  # resources :sessions, only: [:create, :new, :destoy]
+  get 'login', to: 'session#new'
+  post 'session/create', to: 'session#create'
+  delete 'sessions/destroy', to: 'session#destroy', as: 'logout'
 
   resources :users, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   resources :guests, only: [:index, :show, :new, :create, :edit, :update, :destroy]

@@ -4,8 +4,14 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  def current_user_home
+    user = current_user
+    redirect_to user_path(user)
+  end
+
   def show
     @user = User.find(params[:id])
+    @tours = Tour.all
   end
 
   def new

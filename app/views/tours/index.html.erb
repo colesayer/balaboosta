@@ -1,3 +1,5 @@
+<p><%= link_to "+ Add Tour", new_tour_path%></p>
+
 <% @tours.each do |tour| %>
   <%=link_to tour_path(tour.id) do%>
     <section>

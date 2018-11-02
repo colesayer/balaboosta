@@ -1,1 +1,8 @@
-<h1>Hello, <%=@user.first_name%></h1>
+<h1>Hello, <%=@user.formatted_name%></h1>
+
+<h2>Upcoming Tours</h2>
+<ul>
+<% @tours.each do |tour| %>
+  <li><%= link_to tour.formatted_name, tour_path(tour.id) %></li>
+<% end %>
+</ul>

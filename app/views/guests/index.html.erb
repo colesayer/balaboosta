@@ -1,3 +1,5 @@
+<p><%= link_to "+ Add Guest", new_guest_path%></p>
+
 <% @guests.each do |guest| %>
 <hgroup>
   <h1><%= link_to guest.first_name + " " + guest.last_name, guest_path(guest.id) %></h1>

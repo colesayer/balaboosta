@@ -1,20 +1,46 @@
-<%= form_for @user do |f|%>
+<%=form_for @user do |f|%>
 
-  <%=f.label 'Name:'%>
+  <%= f.label 'First Name:' %>
   <br>
-  <%=f.text_field :name%>
+  <%= f.text_field :first_name, required: true, placeholder: 'first name'%>
   <br>
+  <br>
+  <%= f.label 'Last Name:' %>
+  <br>
+  <%= f.text_field :last_name, required: true, placeholder: 'last name'%>
+  <br>
+  <br>
+  <%= f.label 'Email:' %>
+  <br>
+  <%= f.email_field :email, required: true, placeholder: 'name@domain.com' %>
+  <br>
+  <br>
+  <%= f.label 'Phone:' %>
+  <br>
+  <%= f.telephone_field :phone, required: true, placeholder: 'xxx-xxx-xxxx'%>
+  <br>
+  <br>
+  <% if is_admin? %>
+    <%= f.label 'User Role:' %>
+    <br>
+    <%= f.collection_select :role_ids, Role.all, :id, :title, {:prompt => true}%>
+    <br>
+    <br>
+  <% end %>
 
-  <%=f.label 'Email:'%>
-  <br>
-  <%=f.text_field :email%>
-  <br>
 
-  <%=f.label 'Phone:'%>
-  <br>
-  <%=f.text_field :phone%>
-  <br>
+
 
   <%= f.submit %>
+<%end%>
 
+<!-- displays form errors -->
+<% if @user.errors.any? %>
+  <div class="form-error">
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>

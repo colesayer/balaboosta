@@ -10,6 +10,11 @@ Rails.application.routes.draw do
   delete 'sessions/destroy', to: 'session#destroy', as: 'logout'
 
   resources :users, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+
+  get '/users/:id/homepage', to: 'users#homepage', as: 'homepage'
+  get '/users/:id/edit_password', to: 'users#edit_password', as: 'change_password'
+  patch '/users/:id/edit_password', to: 'users#update_password', as: 'update_password'
+
   resources :guests, only: [:index, :show, :new, :create, :edit, :update, :destroy]
 
   get '/guests/:id/add_tour', to: 'guests#new_tour'

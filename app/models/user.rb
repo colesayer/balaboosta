@@ -11,6 +11,8 @@ class User < ApplicationRecord
   validates :first_name, presence: true,  length: { minimum: 2 }
   validates :last_name, presence: true,  length: { minimum: 2 }
 
+  attr_accessor :old_password
+
   def formatted_name
     "#{first_name} #{last_name}"
   end

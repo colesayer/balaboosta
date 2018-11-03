@@ -39,8 +39,8 @@ class ApplicationController < ActionController::Base
     return params[:id] == current_user[:id].to_s
   end
 
-  def is_tour_guide?
-    return current_user.roles[0].title == "TourGuide"
+  def is_tour_guide?(user)
+    return user.roles.any? {|role| role[:title] == "TourGuide"}
   end
 
   def is_booking?

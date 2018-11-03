@@ -1,0 +1,2 @@
+class TourPayment < ApplicationRecord
+end

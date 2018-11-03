@@ -1,11 +1,44 @@
-<h1>Welcome to the <%=@tour.location.name%> Tour, on <%=@tour.formatted_date_long%> at <%=@tour.formatted_time%>.</h1>
-<h2>There are currently <%=@tour.num_enrolled%> guest enrolled.</h2>
+<h1>The <%=@tour.location.name%> Tour, on <%=@tour.formatted_date_long%> at <%=@tour.formatted_time%>.</h1>
+<h2><%= @tour.is_past? ? "There were" : "There are currently" %>  <%=@tour.num_enrolled%> guests enrolled.</h2>
 
 <% @tour.guests.each do |guest| %>
   <p>Name: <%=guest.first_name + " " + guest.last_name%></p>
   <p>Phone: <%= guest.phone%></p>
   <p>Email: <%= guest.email%></p>
-  <p>Guests: <%= guest.num_guests(@tour) %>
-  <p>Booking: <%= guest.booked_by(@tour) %>
+  <p>Guests: <%= guest.num_guests(@tour) %></p>
+  <p>Booking: <%= guest.booked_by(@tour) %></p>
+  <% if !@tour.is_approved %>
+    <%= link_to "Edit Reservation", "/tours/#{@tour.id}/edit_tour/#{guest.id}" %>
+    <%= link_to "Delete Reservation", "/tours/#{@tour.id}/remove_guest/#{guest.id}", method: 'delete', data: { confirm: "Really?" } %>
+  <% end %>
   <hr>
 <%end%>
+
+<% if @tour.is_past? && !@tour.is_approved%>
+  <%=form_tag "/tours/#{@tour.id}/approve_tour" do %>
+    <%= submit_tag "Approve Tour", class: '', data: { confirm: "Are You 100% Sure?" }%>
+  <% end %>
+<% else %>
+  <p>Add a Guest or <%= link_to "+ create new guest", new_guest_path %></p>
+
+  <%=form_tag "/tours/#{@tour.id}/add_guest" do %>
+
+    <%= label_tag 'Guest:' %>
+    <br>
+    <%= collection_select :guest, :id, Guest.all, :id, :formatted_name, {:prompt => true} %>
+    <br>
+    <br>
+    <%= label_tag 'Number of guests:' %>
+    <br>
+    <%= select_tag :num_guests, options_for_select(1..20) %>
+    <br>
+    <br>
+    <%= label_tag 'Booked by:' %>
+    <br>
+    <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:prompt => true} %>
+    <br>
+    <br>
+    <%= submit_tag "Add Guest", class: ''%>
+  <%end%>
+
+<% end %>

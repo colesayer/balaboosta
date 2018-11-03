@@ -24,4 +24,14 @@ Rails.application.routes.draw do
   delete "/guests/:id/remove_tour/:tour_id", to: 'guests#remove_tour'
 
   resources :tours, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+
+  get '/tours/:id/edit_tour/:guest_id', to: 'tours#edit_reservation'
+  post '/tours/:id/edit_tour/:guest_id', to: 'tours#update_reservation'
+  get '/tours/:id/add_guest', to: 'tours#new_guest'
+  post '/tours/:id/add_guest', to: 'tours#add_guest'
+  post '/tours/:id/approve_tour', to: 'tours#approve_tour', as: 'approve_tour'
+  delete '/tours/:id/remove_guest/:guest_id', to: 'tours#remove_guest'
+
+
+  resources :payments
 end

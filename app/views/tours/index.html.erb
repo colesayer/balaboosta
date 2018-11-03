@@ -18,7 +18,10 @@
 
 <div class="past-tours-container">
 <h2>Past Tours</h2>
-<% @past_tours.each do |tour| %>
+
+<h3>To Be Approved</h3>
+<hr>
+<% @past_tours_needs_approval.each do |tour| %>
   <%=link_to tour_path(tour.id) do%>
     <section>
       <p>Type: <%=tour.location.name%></h1>
@@ -30,4 +33,21 @@
     </section>
   <%end%>
 <% end %>
+
+<h3>Approved</h3>
+<hr>
+<% @past_tours_approved.each do |tour| %>
+  <%=link_to tour_path(tour.id) do%>
+    <section>
+      <p>Type: <%=tour.location.name%></h1>
+      <p>Date: <%=tour.formatted_date_long%></p>
+      <p>Time: <%=tour.formatted_time%></p>
+      <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
+      <p>Enrolled: <%= tour.num_enrolled %></p>
+      <hr>
+    </section>
+  <%end%>
+<% end %>
+
+
 </div>

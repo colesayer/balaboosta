@@ -1,4 +1,5 @@
 <h1>Hello, <%=@guest.first_name%></h1>
+<%=mail_to @guest.email%>
 
 <h2>Upcoming Tours</h2>
 <% @guest.tours.each do |tour| %>

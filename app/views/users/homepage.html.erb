@@ -2,7 +2,7 @@
 
 <h2>Upcoming Tours</h2>
 <ul>
-<% @tours.each do |tour| %>
+<% @upcoming_tours.each do |tour| %>
   <li><%= link_to tour.formatted_name, tour_path(tour.id) %></li>
 <% end %>
 </ul>

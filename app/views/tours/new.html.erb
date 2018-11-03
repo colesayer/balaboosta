@@ -7,17 +7,26 @@
 
   <%= f.label "Date:" %>
   <br>
-  <%= f.text_field :date %>
+  <%= f.date_field :date %>
   <br>
 
   <%= f.label "Start Time:" %>
   <br>
-  <%= f.text_field :start_time %>
+  <%= f.time_field :start_time %>
   <br>
 
   <%= f.label "Base Price:" %>
   <br>
   <%= f.number_field :base_price, value: number_to_currency(f.object.base_price), step: :any %>
+  <br>
+
+  <%= f.label "Private?" %>
+  <%= f.check_box :is_private %>
+  <br>
+
+  <%= f.label "Select Tourguide" %>
+  <br>
+  <%=f.collection_select :user_ids, @users, :id, :formatted_name, {:prompt => true} %>
   <br>
   <br>
   <%= f.submit %>

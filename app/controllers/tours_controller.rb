@@ -1,6 +1,7 @@
 class ToursController < ApplicationController
   def index
-    @tours = Tour.all
+    @upcoming_tours = Tour.where('date >= ?', Date.today).order(:date)
+    @past_tours = Tour.where('date < ?', Date.today).order(:date)
   end
 
   def show
@@ -8,6 +9,7 @@ class ToursController < ApplicationController
   end
 
   def new
+    @users = User.role("TourGuide")
   end
 
   def create

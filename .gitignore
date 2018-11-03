@@ -20,3 +20,5 @@
 
 # Ignore custom seed files.
 /db/seeds/*
+
+/ToDo.txt

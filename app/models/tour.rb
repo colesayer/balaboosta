@@ -2,11 +2,25 @@ class Tour < ApplicationRecord
   has_many :tour_guests
   has_many :guests, through: :tour_guests
   belongs_to :location
+  has_many :tour_users
+  has_many :users, through: :tour_users
 
 
 # for form collection_select
 def formatted_name
-  "#{self.location.name} - #{self.date}"
+  "#{location.name} - #{formatted_date_short}"
+end
+
+def formatted_date_short
+  return date.to_date.strftime('%b %d, %Y')
+end
+
+def formatted_date_long
+  return date.to_date.strftime('%A, %b %d, %Y')
+end
+
+def formatted_time
+  return start_time.to_time.strftime('%l:%M %p')
 end
 
 def num_enrolled

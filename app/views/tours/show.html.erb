@@ -1,4 +1,4 @@
-<h1>Welcome to the <%=@tour.location.name%> Tour, on <%=@tour.date%> at <%=@tour.start_time%>.</h1>
+<h1>Welcome to the <%=@tour.location.name%> Tour, on <%=@tour.formatted_date_long%> at <%=@tour.formatted_time%>.</h1>
 <h2>There are currently <%=@tour.num_enrolled%> guest enrolled.</h2>
 
 <% @tour.guests.each do |guest| %>

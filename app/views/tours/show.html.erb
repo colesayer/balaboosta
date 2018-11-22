@@ -18,7 +18,8 @@
   <%=form_tag "/tours/#{@tour.id}/approve_tour" do %>
     <%= submit_tag "Approve Tour", class: '', data: { confirm: "Are You 100% Sure?" }%>
   <% end %>
-<% else %>
+<% end %>
+
   <p>Add a Guest or <%= link_to "+ create new guest", new_guest_path %></p>
 
   <%=form_tag "/tours/#{@tour.id}/add_guest" do %>
@@ -40,5 +41,3 @@
     <br>
     <%= submit_tag "Add Guest", class: ''%>
   <%end%>
-
-<% end %>

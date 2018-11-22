@@ -1,53 +1,129 @@
-<p><%= link_to "+ Add Tour", new_tour_path%></p>
+<%# TODO: Add edit tour button %>
 
-<div class="upcoming-tours-container">
-<h2>Upcoming Tours</h2>
-<% @upcoming_tours.each do |tour| %>
-  <%=link_to tour_path(tour.id) do%>
-    <section>
-      <p>Type: <%=tour.location.name%></h1>
-      <p>Date: <%=tour.formatted_date_long%></p>
-      <p>Time: <%=tour.formatted_time%></p>
-      <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
-      <p>Enrolled: <%= tour.num_enrolled %></p>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="upcoming-tours-tab" data-toggle="tab" href="#upcoming-tours" role="tab" aria-controls="upcoming-tours" aria-selected="true">Upcoming Tours</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="past-tours-tab" data-toggle="tab" href="#past-tours" role="tab" aria-controls="past-tours" aria-selected="false">Past Tours</a>
+  </li>
+  <!-- <li class="nav-item">
+    <a class="nav-link" id="needs-approval-tab" data-toggle="tab" href="#needs-approval" role="tab" aria-controls="needs-approval" aria-selected="false">Needs Approval</a>
+  </li> -->
+</ul>
+
+
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="upcoming-tours" role="tabpanel" aria-labelledby="upcoming-tours-tab">
+    <div class="upcoming-tours-container">
+      <h2>Upcoming Tours</h2>
+      <% @upcoming_tours.each do |tour| %>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%=tour.location.name%></h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
+                <!-- <li class="list-group-item"><%=tour.formatted_time%></li> -->
+                <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
+                <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
+              </ul>
+            <!-- <p>Date: <%=tour.formatted_date_long%></p>
+            <p>Time: <%=tour.formatted_time%></p>
+            <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
+            <p>Enrolled: <%= tour.num_enrolled %></p> -->
+            </div>
+            <!-- <div class="card-body">
+              <%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%>
+            </div> -->
+          </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="past-tours" role="tabpanel" aria-labelledby="past-tours-tab">
+    <div class="past-tours-container">
+      <h2>Past Tours</h2>
+
+      <h3>To Be Approved</h3>
       <hr>
-    </section>
-  <%end%>
-<% end %>
+      <% @past_tours_needs_approval.each do |tour| %>
+        <%=link_to tour_path(tour.id) do%>
+          <section>
+            <p>Type: <%=tour.location.name%></h1>
+            <p>Date: <%=tour.formatted_date_long%></p>
+            <p>Time: <%=tour.formatted_time%></p>
+            <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
+            <p>Enrolled: <%= tour.num_enrolled %></p>
+            <hr>
+          </section>
+        <%end%>
+      <% end %>
+
+      <h3>Approved</h3>
+      <hr>
+      <% @past_tours_approved.each do |tour| %>
+        <%=link_to tour_path(tour.id) do%>
+          <section>
+            <p>Type: <%=tour.location.name%></h1>
+            <p>Date: <%=tour.formatted_date_long%></p>
+            <p>Time: <%=tour.formatted_time%></p>
+            <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
+            <p>Enrolled: <%= tour.num_enrolled %></p>
+            <hr>
+          </section>
+        <%end%>
+      <% end %>
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
 </div>
 
-<div class="past-tours-container">
-<h2>Past Tours</h2>
 
-<h3>To Be Approved</h3>
-<hr>
-<% @past_tours_needs_approval.each do |tour| %>
-  <%=link_to tour_path(tour.id) do%>
-    <section>
-      <p>Type: <%=tour.location.name%></h1>
-      <p>Date: <%=tour.formatted_date_long%></p>
-      <p>Time: <%=tour.formatted_time%></p>
-      <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
-      <p>Enrolled: <%= tour.num_enrolled %></p>
-      <hr>
-    </section>
-  <%end%>
-<% end %>
+<% content_for :side_bar do %>
+  <p><%= link_to "+ Add Tour", new_tour_path%></p>
 
-<h3>Approved</h3>
-<hr>
-<% @past_tours_approved.each do |tour| %>
-  <%=link_to tour_path(tour.id) do%>
-    <section>
-      <p>Type: <%=tour.location.name%></h1>
-      <p>Date: <%=tour.formatted_date_long%></p>
-      <p>Time: <%=tour.formatted_time%></p>
-      <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
-      <p>Enrolled: <%= tour.num_enrolled %></p>
-      <hr>
-    </section>
-  <%end%>
-<% end %>
+  <h4>Upcoming Tours</h4>
 
+<div class="container">
+  <%= form_tag(tours_path, method: :get) do %>
+    <div class="form-check">
+      <% if params[:location_filter].present? %>
+        <%= collection_check_boxes(:location_filter, :location_id, Location.all, :id, :name, {include_hidden: false, checked: params[:location_filter][:location_id]}) do |b| %>
+          <div class="row">
+            <%= b.label(class: "check_box") do %>
+              <div class="col-xs-4">
+                <%= b.check_box(class: "form-check-input") %>
+              </div>
 
+              <div class="col-xs-8">
+                <%= b.object.name %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+      <%= collection_check_boxes(:location_filter, :location_id, Location.all, :id, :name, {include_hidden: false}) do |b| %>
+        <div class="row">
+          <%= b.label(class: "check_box") do %>
+            <div class="col-xs-4">
+              <%= b.check_box(class: "form-check-input") %>
+            </div>
+
+            <div class="col-xs-8">
+              <%= b.object.name %>
+            </div>
+          <% end %>
+        </div>
+
+      <% end %>
+      <% end %>
+    </div>
+    <%= submit_tag 'Search' %>
+  <% end %>
 </div>
+
+  <h4>Past Tours</h4>
+
+<% end %>

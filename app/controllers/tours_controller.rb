@@ -1,8 +1,14 @@
 class ToursController < ApplicationController
+
   def index
-    @upcoming_tours = Tour.upcoming
-    @past_tours_needs_approval = Tour.past_needs_approval
-    @past_tours_approved = Tour.past_approved
+    @tours = if params[:location_filter]
+      Tour.where(location_id: params[:location_filter][:location_id])
+    else
+      Tour.all
+    end
+    @upcoming_tours = @tours.upcoming
+    @past_tours_needs_approval = @tours.past_needs_approval
+    @past_tours_approved = @tours.past_approved
   end
 
   def show
@@ -30,6 +36,7 @@ class ToursController < ApplicationController
   end
 
   def create
+    convert_date_time(params[:tour][:start_time_time], params[:tour][:start_time_date])
     @tour = Tour.new(tour_params)
     @tour.save
     redirect_to tour_path(@tour)
@@ -81,7 +88,11 @@ class ToursController < ApplicationController
   private
 
   def tour_params
-    params.require(:tour).permit(:location_id, :date, :start_time, :base_price, :is_private, [:user_ids])
+    params.require(:tour).permit(:location_id, :date, :start_time, :base_price, :is_private, [:user_ids], :location_filter)
+  end
+
+  def convert_date_time(time, date)
+    params[:tour][:start_time] = "#{date} #{time}"
   end
 
 end

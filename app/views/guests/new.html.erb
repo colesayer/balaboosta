@@ -1,39 +1,21 @@
-<%=form_for @guest do |f|%>
-
-  <%= f.label 'First Name:' %>
-  <br>
-  <%= f.text_field :first_name, required: true, placeholder: 'first name'%>
-  <br>
-  <br>
-  <%= f.label 'Last Name:' %>
-  <br>
-  <%= f.text_field :last_name, required: true, placeholder: 'last name'%>
-  <br>
-  <br>
-  <%= f.label 'Email:' %>
-  <br>
-  <%= f.email_field :email, required: true, placeholder: 'name@domain.com' %>
-  <br>
-  <br>
-  <%= f.label 'Phone:' %>
-  <br>
-  <%= f.telephone_field :phone, required: true, placeholder: 'xxx-xxx-xxxx'%>
-  <br>
-  <br>
-
-
-  <%= f.submit %>
-<%end%>
-
-<!-- displays form errors -->
-<% if @guest.errors.any? %>
-  <div class="form-error">
-    <ul>
-      <% @guest.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
+<div class="fluid-container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 centered">
+      <%=form_for @guest do |form|%>
+        <%= render partial: 'form', locals: { f: form} %>
+      <%end%>
+    </div>
   </div>
-<% end %>
 
-<%= params.inspect %>
+
+    <!-- displays form errors -->
+    <% if @guest.errors.any? %>
+      <div class="form-error">
+        <ul>
+          <% @guest.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+</div>

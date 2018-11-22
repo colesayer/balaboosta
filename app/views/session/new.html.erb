@@ -1,15 +1,17 @@
-<h1>Login</h1>
+  <%= form_tag('session/create', {class: "form-signin"})  do %>
+    <h1>Balaboosta</h1>
+    <h2 class="h4 mb-3 font-weight-normal">Please sign in</h2>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <%= email_field_tag :email, nil, id: "inputEmail", class: "form-control", placeholder: "Email address", require: true, autofocus: true %>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <%= password_field_tag :password, nil, id: "inputPassword", class: "form-control", placeholder: "Password", required: true  %>
+    <br>
+    <% if flash[:error] %>
+      <div class="alert alert-warning" role="alert">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
 
-<% if flash[:error] %>
-    <div class="error"><%= flash[:error] %></div>
+    <%= submit_tag "Submit", class: "btn btn-lg btn-primary btn-block" %>
+    <p class="mt-5 mb-3 text-muted">© 2018</p>
   <% end %>
-
-<%= form_tag 'session/create' do %>
-  <label>Email:</label></br>
-  <%= text_field_tag :email %></br>
-  </br>
-  <label>Password:</label></br>
-  <%= password_field_tag :password %></br>
-  </br>
-  <%= submit_tag "Submit" %>
-<% end %>

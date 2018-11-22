@@ -1,0 +1,40 @@
+@import "bootstrap";
+@import "session";
+@import "simple_calendar";
+
+html, body{
+  height: 100vh;
+  width: 100vw;
+  background-color: #f5f5f5;
+}
+
+// .navbar{
+//   height: 6vh;
+// }
+
+.row{
+  height: 100%;
+}
+
+.main-wrapper{
+  height: 100vh;
+}
+
+.sidebar{
+  padding-top: 70px;
+  background-color: #ffffff;
+}
+
+[role="main"] {
+    padding-top: 70px;
+    overflow: auto;
+}
+
+.simple-calendar{
+  .day{
+    height: 6vw;
+  }
+  .td{
+    width: 6vw;
+  }
+}

@@ -7,6 +7,17 @@
 
   <%= f.label "Date:" %>
   <br>
+  <%= f.date_field :start_time_date, as: :string, input_html: { class: 'datepicker' } %>
+  <br>
+
+  <%= f.label "Start Time:" %>
+  <br>
+  <%= f.time_field :start_time_time, as: :time %>
+  <br>
+
+  <%if false %>
+  <%= f.label "Date:" %>
+  <br>
   <%= f.date_field :date %>
   <br>
 
@@ -14,6 +25,7 @@
   <br>
   <%= f.time_field :start_time %>
   <br>
+  <% end %>
 
   <%= f.label "Base Price:" %>
   <br>

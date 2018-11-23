@@ -15,18 +15,6 @@
   <%= f.time_field :start_time_time, as: :time %>
   <br>
 
-  <%if false %>
-  <%= f.label "Date:" %>
-  <br>
-  <%= f.date_field :date %>
-  <br>
-
-  <%= f.label "Start Time:" %>
-  <br>
-  <%= f.time_field :start_time %>
-  <br>
-  <% end %>
-
   <%= f.label "Base Price:" %>
   <br>
   <%= f.number_field :base_price, value: number_to_currency(f.object.base_price), step: :any %>

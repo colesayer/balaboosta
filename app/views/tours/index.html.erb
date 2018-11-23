@@ -8,83 +8,86 @@
   <li class="nav-item">
     <a class="nav-link" id="past-tours-tab" data-toggle="tab" href="#past-tours" role="tab" aria-controls="past-tours" aria-selected="false">Past Tours</a>
   </li>
-  <!-- <li class="nav-item">
-    <a class="nav-link" id="needs-approval-tab" data-toggle="tab" href="#needs-approval" role="tab" aria-controls="needs-approval" aria-selected="false">Needs Approval</a>
-  </li> -->
 </ul>
 
 
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="upcoming-tours" role="tabpanel" aria-labelledby="upcoming-tours-tab">
-    <div class="upcoming-tours-container">
+
+    <div class="tours-container">
       <h2>Upcoming Tours</h2>
-      <% @upcoming_tours.each do |tour| %>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title"><%=tour.location.name%></h5>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
-                <!-- <li class="list-group-item"><%=tour.formatted_time%></li> -->
-                <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
-                <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
-              </ul>
-            <!-- <p>Date: <%=tour.formatted_date_long%></p>
-            <p>Time: <%=tour.formatted_time%></p>
-            <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
-            <p>Enrolled: <%= tour.num_enrolled %></p> -->
+
+      <div class="tours-list">
+        <% @upcoming_tours.each do |tour| %>
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title"><%=tour.location.name%></h5>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
+                  <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
+                  <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
+                </ul>
+              </div>
             </div>
-            <!-- <div class="card-body">
-              <%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%>
-            </div> -->
-          </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 
   <div class="tab-pane fade" id="past-tours" role="tabpanel" aria-labelledby="past-tours-tab">
-    <div class="past-tours-container">
+    <div class="tours-container">
       <h2>Past Tours</h2>
 
-      <h3>To Be Approved</h3>
-      <hr>
-      <% @past_tours_needs_approval.each do |tour| %>
-        <%=link_to tour_path(tour.id) do%>
-          <section>
-            <p>Type: <%=tour.location.name%></h1>
-            <p>Date: <%=tour.formatted_date_long%></p>
-            <p>Time: <%=tour.formatted_time%></p>
-            <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
-            <p>Enrolled: <%= tour.num_enrolled %></p>
-            <hr>
-          </section>
-        <%end%>
-      <% end %>
+      <ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-needs-approval-tab" data-toggle="pill" href="#pills-needs-approval" role="tab" aria-controls="pills-needs-approval" aria-selected="true">Needs Approval</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-approved-tab" data-toggle="pill" href="#pills-approved" role="tab" aria-controls="pills-approved" aria-selected="false">Approved</a>
+        </li>
+      </ul>
 
-      <h3>Approved</h3>
-      <hr>
-      <% @past_tours_approved.each do |tour| %>
-        <%=link_to tour_path(tour.id) do%>
-          <section>
-            <p>Type: <%=tour.location.name%></h1>
-            <p>Date: <%=tour.formatted_date_long%></p>
-            <p>Time: <%=tour.formatted_time%></p>
-            <p>Price: <%=number_to_currency(tour.base_price, :unit => "$")%></p>
-            <p>Enrolled: <%= tour.num_enrolled %></p>
-            <hr>
-          </section>
-        <%end%>
-      <% end %>
-    </div>
-
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-needs-approval" role="tabpanel" aria-labelledby="pills-needs-approval-tab">
+          <div class="tours-list">
+          <% @past_tours_needs_approval.each do |tour| %>
+            <div class="card shadow">
+              <div class="card-body">
+                <h5 class="card-title"><%=tour.location.name%></h5>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
+                  <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
+                  <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
+                </ul>
+              </div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
+          <div class="tours-list">
+            <% @past_tours_approved.each do |tour| %>
+              <div class="card shadow">
+                <div class="card-body">
+                  <h5 class="card-title"><%=tour.location.name%></h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
+                    <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
+                    <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+      </div>
   </div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
 </div>
 
 
 <% content_for :side_bar do %>
   <p><%= link_to "+ Add Tour", new_tour_path%></p>
-
-  <h4>Upcoming Tours</h4>
 
 <div class="container">
   <%= form_tag(tours_path, method: :get) do %>
@@ -120,10 +123,8 @@
       <% end %>
       <% end %>
     </div>
-    <%= submit_tag 'Search' %>
+    <%= submit_tag("Filter", :id=>"button", :class=>"btn btn-outline-primary") %>
   <% end %>
 </div>
-
-  <h4>Past Tours</h4>
 
 <% end %>

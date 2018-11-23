@@ -1,25 +1,34 @@
-<%= form_for @tour do |f|%>
+<%= form_for @tour do |f| %>
 
-  <%=f.label 'Name:'%>
+  <%= f.label "Location:" %>
   <br>
-  <%=f.text_field :name%>
-  <br>
-
-  <%=f.label 'Date:'%>
-  <br>
-  <%=f.text_field :date%>
+  <%= f.collection_select :location_id, Location.all, :id, :name, {:prompt => true} %>
   <br>
 
-  <%=f.label 'Start Time:'%>
+  <%= f.label "Date:" %>
   <br>
-  <%=f.text_field :start_time%>
-  <br>
-
-  <%=f.label 'Price:'%>
-  <br>
-  <%=f.text_field :fee%>
+  <%= f.date_field :start_time_date, as: :string, input_html: { class: 'datepicker' } %>
   <br>
 
+  <%= f.label "Start Time:" %>
+  <br>
+  <%= f.time_field :start_time_time, as: :time %>
+  <br>
 
-  <%= f.submit "Update Tour" %>
-<%end%>
+  <%= f.label "Base Price:" %>
+  <br>
+  <%= f.number_field :base_price, value: number_to_currency(f.object.base_price), step: :any %>
+  <br>
+
+  <%= f.label "Private?" %>
+  <%= f.check_box :is_private %>
+  <br>
+
+  <%= f.label "Select Tourguide" %>
+  <br>
+  <%=f.collection_select :user_ids, @users, :id, :formatted_name, {:prompt => true} %>
+  <br>
+  <br>
+  <%= f.submit %>
+
+<% end %>

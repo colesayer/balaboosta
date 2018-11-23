@@ -44,6 +44,7 @@ class ToursController < ApplicationController
 
   def edit
     @tour = Tour.find(params[:id])
+    @users = User.role("TourGuide")
   end
 
   def update

@@ -1,10 +1,43 @@
-<p><%= link_to "+ Add User", new_user_path%></p>
-<%is_admin?%>
-<% @users.each do |user| %>
-<hgroup>
-  <h1><%= link_to user.formatted_name, user_path(user.id) %></h1>
-  <h2><%= user.email %></h2>
-  <h3><%= user.phone %></h3>
-  <hr>
-</hgroup>
-<%end%>
+<%if is_admin?%>
+  <%= form_tag users_path, :method => :get, :class => 'form-inline' do %>
+      <div class="form-group mb-2" style="margin-right: 1rem;">
+        <%= text_field_tag :search, params[:search], class: "form-control"  %>
+      </div>
+      <%= submit_tag "Search", :name => nil, :class => 'btn btn-outline-primary mb-2' %>
+  <% end %>
+
+
+
+
+
+  <div class="table-responsive border" style="background-color: white;">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">First</th>
+          <th scope="col">Last</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr id="user_info" data-link="<%= user_path(user)%>">
+            <th scope="row"><%= link_to user.id, user_path(user) %></th>
+            <td><%=user.first_name%></td>
+            <td><%=user.last_name%></td>
+            <td><%=user.email%></td>
+            <td><%=user.phone%></td>
+          <tr>
+        <%end%>
+      </tbody>
+    </table
+  </div>
+
+
+  <% content_for :side_bar do %>
+    <p><%= link_to "+ Add User", new_user_path%></p>
+  <% end %>
+<% end %>

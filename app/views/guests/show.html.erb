@@ -1,34 +1,212 @@
-<h1>Hello, <%=@guest.first_name%></h1>
-<%=mail_to @guest.email%>
+<h1><%=@guest.formatted_name%></h1>
 
-<h2>Upcoming Tours</h2>
-<% @guest.tours.each do |tour| %>
-  <h3><%=tour.location.name + " - " + tour.date + " with " + @guest.num_guests(tour).to_s + " guests." if @guest.num_guests(tour)%></h3>
-  <%= link_to "Delete Reservation", "/guests/#{@guest.id}/remove_tour/#{tour.id}", method: 'delete', data: { confirm: "Really?" } %>
-  <%= link_to "Edit Reservation", "/guests/#{@guest.id}/edit_tour/#{tour.id}" %>
+<ul class="list-group col-md-6">
+ <li class="list-group-item"><%=mail_to @guest.email%></li>
+ <li class="list-group-item"><a href="tel:<%=@guest.phone%>"><%=@guest.phone%></a></li>
+</ul>
+
+
+<div class="guest__upcoming-tours">
+  <h5>Upcoming Tours:</h5>
+
+  <ul class="list-group">
+
+    <% @guest.tour_guests.each do |reservation| %>
+      <% if reservation.tour && !reservation.tour.is_past? %>
+        <li class="list-group-item <%="list-group-item-warning" if reservation.is_confirmed%> <%="list-group-item-danger" if reservation.is_cancelled%>">
+          <h4 class="d-flex justify-content-between align-items-center">
+            <%=reservation.tour.location.name + " - " + reservation.tour.formatted_date_short + " with " + reservation.num_guests.to_s + " guests." if reservation.num_guests.to_s%>
+            <% if reservation.comments.length > 0 %>
+              <span class="badge badge-pill badge-danger" data-toggle="modal" data-target="#reservationNoteModal<%=reservation.id %>">
+                <%= reservation.comments.length %>
+              </span>
+            <% end %>
+          </h4>
+          <ul class="nav">
+            <li class="nav-item">
+              <%= link_to "Tour Page", "/tours/#{reservation.tour.id}", class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Edit Reservation", "/guests/#{@guest.id}/edit_tour/#{reservation.tour.id}", class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Delete Reservation", "/guests/#{@guest.id}/remove_tour/#{reservation.tour.id}", class: "nav-link", method: 'delete', data: { confirm: "Really?" } %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+    <% end %>
+
+  </ul>
+</div>
+
+<div class="guest__past-tours">
+  <h5>Past Tours:</h5>
+
+  <ul class="list-group">
+
+    <% @guest.tour_guests.each do |reservation| %>
+      <% if reservation.tour && reservation.tour.is_past? %>
+        <li class="list-group-item <%="list-group-item-warning" if reservation.is_confirmed%> <%="list-group-item-danger" if reservation.is_cancelled%>">
+          <h4 class="d-flex justify-content-between align-items-center">
+            <%=reservation.tour.location.name + " - " + reservation.tour.formatted_date_short + " with " + reservation.num_guests.to_s + " guests." if reservation.num_guests.to_s%>
+            <% if reservation.comments.length > 0 %>
+              <span class="badge badge-pill badge-danger" data-toggle="modal" data-target="#reservationNoteModal<%=reservation.id %>">
+                <%= reservation.comments.length %>
+              </span>
+            <% end %>
+          </h4>
+          <ul class="nav">
+            <li class="nav-item">
+              <%= link_to "Tour Page", "/tours/#{reservation.tour.id}", class: "nav-link" %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+    <% end %>
+
+  </ul>
+</div>
+
+<% if false %>
+<%if @guest.tours.upcoming.any? %>
+  <div class="guest__upcoming-tours">
+    <h5>Upcoming Tours:</h5>
+    <ul class="list-group">
+      <% @guest.tours.upcoming.each do |tour| %>
+        <li class="list-group-item">
+          <h4 class="d-flex justify-content-between align-items-center">
+            <%=tour.location.name + " - " + tour.formatted_date_short + " with " + @guest.num_guests(tour).to_s + " guests." if @guest.num_guests(tour)%>
+            <button class="badge badge-pill badge-danger" data-toggle="modal" data-target="#tourNoteModal">
+              <%= tour.comments.length if tour.comments.length > 0%>
+            </button>
+          </h4>
+          <ul class="nav">
+            <li class="nav-item">
+              <%= link_to "Tour Page", "/tours/#{tour.id}", class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Edit Reservation", "/guests/#{@guest.id}/edit_tour/#{tour.id}", class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Delete Reservation", "/guests/#{@guest.id}/remove_tour/#{tour.id}", class: "nav-link", method: 'delete', data: { confirm: "Really?" } %>
+            </li>
+          </ul>
+        </li>
+
+        <div class="modal fade" id="tourNoteModal" tabindex="-1" role="dialog" aria-labelledby="tourNoteModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Comments on <%=tour.formatted_name%>:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group">
+                  <% tour.comments.reverse.each do |comment| %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center <%="list-group-item-danger" if comment.is_important %>">
+                      <%= comment.content %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <% end %>
+    </ul>
+  </div>
+
 <% end %>
 
-<h2>Add a Tour</h2>
 
-<%=form_tag "/guests/#{@guest.id}/add_tour" do %>
+<%if @guest.tours.past.any? %>
 
-  <%= label_tag 'Select a tour:' %>
-  <br>
-  <%= collection_select :tour, :id, Tour.all, :id, :formatted_name, {:prompt => true} %>
-  <br>
-  <br>
-  <%= label_tag 'Number of guests:' %>
-  <br>
-  <%= select_tag :num_guests, options_for_select(1..20) %>
-  <br>
-  <br>
-  <%= label_tag 'Booked by:' %>
-  <br>
-  <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:prompt => true} %>
-  <br>
-  <br>
-  <%= submit_tag "Add Tour", class: ''%>
-<%end%>
-<br>
+  <div class="guest__past-tours">
+
+    <h5>Past Tours:</h5>
+
+
+    <ul class="list-group">
+      <% @guest.tours.past.each do |tour| %>
+        <li class="list-group-item">
+          <h4 class="d-flex justify-content-between align-items-center">
+            <%=tour.location.name + " - " + tour.formatted_date_short + " with " + @guest.num_guests(tour).to_s + " guests." if @guest.num_guests(tour)%>
+            <button class="badge badge-pill badge-danger" data-toggle="modal" data-target="#tour<%=tour.id%>Modal">
+              <%= tour.comments.length if tour.comments.length > 0%>
+            </button>
+          </h4>
+
+          <ul class="nav">
+            <li class="nav-item">
+              <%= link_to "Tour Page", "/tours/#{tour.id}", class: "nav-link" %>
+            </li>
+          </ul>
+        </li>
+
+        <div class="modal fade" id="#tour<%=tour.id%>Modal" tabindex="-1" role="dialog" aria-labelledby="pastTourNoteModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Comments on <%=tour.formatted_name%>:</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ul class="list-group">
+                  <% tour.comments.reverse.each do |comment| %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center <%="list-group-item-danger" if comment.is_important %>">
+                      <%= comment.content %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </ul>
+  </div>
+
+<% end %>
+
+<% end %>
 
 <%= link_to "Delete Guest", @guest, method: :delete, data: { confirm: "Really?" } %>
+
+<% content_for :side_bar do %>
+
+  <div class="container">
+    <h2>Add a Tour</h2>
+
+    <%=form_tag "/guests/#{@guest.id}/add_tour" do %>
+
+      <div class="form-group">
+        <%= label_tag 'Select a tour:' %>
+        <%= collection_select :tour, :id, Tour.all, :id, :formatted_name, {:prompt => true}, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag 'Number of guests:' %>
+        <%= select_tag :num_guests, options_for_select(1..20), class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag 'Booked by:' %>
+        <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:prompt => true}, class: 'form-control' %>
+      </div>
+
+      <%= submit_tag "Add Tour", class: 'btn btn-primary'%>
+    <%end%>
+  </div>
+<% end %>

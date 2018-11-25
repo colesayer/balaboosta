@@ -1,0 +1,28 @@
+<div class="form-group">
+  <%= f.label 'First Name:' %>
+  <%= f.text_field :first_name, required: true, placeholder: 'first name', class: 'form-control'%>
+</div>
+
+<div class="form-group">
+  <%= f.label 'Last Name:' %>
+  <%= f.text_field :last_name, required: true, placeholder: 'last name', class: 'form-control'%>
+</div>
+
+<div class="form-group">
+<%= f.label 'Email:' %>
+<%= f.email_field :email, required: true, placeholder: 'name@domain.com', class: 'form-control' %>
+</div>
+
+<div class="form-group">
+<%= f.label 'Phone:' %>
+<%= f.telephone_field :phone, required: true, placeholder: 'xxx-xxx-xxxx', class: 'form-control'%>
+</div>
+
+<div class="field form-group">
+<div class="checkbox-inline">
+  <%= f.label 'Subscribed: '%>
+  <%= f.check_box :subscribed %>
+</div>
+</div>
+
+<%= f.submit class: 'btn btn-primary'%>

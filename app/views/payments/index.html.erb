@@ -1,6 +1,9 @@
 <% @payments.each do |payment| %>
   <p>Recipient: <%=payment.user.formatted_name%></p>
   <p>Amount: <%=number_to_currency(payment.amount, :unit => "$")%></p>
-  <p>Tour: <%=payment.tour.formatted_name%></p>
+  <p>Tour: <%=payment.tour.formatted_name if payment.tour%></p>
   <hr>
 <% end %>
+
+
+<%# TODO: Group things by tour, add paid button %>

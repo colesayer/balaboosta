@@ -11,8 +11,8 @@ class UsersController < ApplicationController
 
   def homepage
     @user = User.find(params[:id])
-
-    @upcoming_tours = Tour.where('date >= ?', Date.today).order(:date)
+    @tours = Tour.all
+    @upcoming_tours = @tours.where('start_time >= ?', Date.today).order(:start_time)
   end
 
   def show

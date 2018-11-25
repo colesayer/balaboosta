@@ -27,6 +27,10 @@ Rails.application.routes.draw do
 
   get '/tours/:id/edit_tour/:guest_id', to: 'tours#edit_reservation'
   post '/tours/:id/edit_tour/:guest_id', to: 'tours#update_reservation'
+  post '/tours/:id/edit_tour/:guest_id/append_note', to: 'tours#append_note_reservation'
+  delete '/tours/:id/edit_tour/:guest_id/:comment_id', to: 'tours#remove_note_reservation'
+  post '/tours/:id/append_note', to: 'tours#append_note_tour'
+  delete '/tours/:id/:comment_id', to: 'tours#remove_note_tour'
   get '/tours/:id/add_guest', to: 'tours#new_guest'
   post '/tours/:id/add_guest', to: 'tours#add_guest'
   post '/tours/:id/approve_tour', to: 'tours#approve_tour', as: 'approve_tour'

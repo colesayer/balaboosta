@@ -9,8 +9,11 @@ class CalculateTourguidePayments
   end
 
   def number_guests
-    guests = @reservations.map {|r| r[:num_guests]}.reduce(0, :+)
-    return guests.to_i
+    num_guests = 0
+    @reservations.each do |res|
+      num_guests += res.num_guests if !res.is_cancelled
+    end
+    return num_guests.to_i
   end
 
   def calculate_payment

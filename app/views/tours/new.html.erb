@@ -1,34 +1,6 @@
-<%= form_for Tour.new do |f| %>
-
-  <%= f.label "Location:" %>
-  <br>
-  <%= f.collection_select :location_id, Location.all, :id, :name, {:prompt => true} %>
-  <br>
-
-  <%= f.label "Date:" %>
-  <br>
-  <%= f.date_field :date %>
-  <br>
-
-  <%= f.label "Start Time:" %>
-  <br>
-  <%= f.time_field :start_time %>
-  <br>
-
-  <%= f.label "Base Price:" %>
-  <br>
-  <%= f.number_field :base_price, value: number_to_currency(f.object.base_price), step: :any %>
-  <br>
-
-  <%= f.label "Private?" %>
-  <%= f.check_box :is_private %>
-  <br>
-
-  <%= f.label "Select Tourguide" %>
-  <br>
-  <%=f.collection_select :user_ids, @users, :id, :formatted_name, {:prompt => true} %>
-  <br>
-  <br>
-  <%= f.submit %>
-
+<%= form_for Tour.new do |form| %>
+  <div class="container">
+    <h1> Add a Tour </h1>
+    <%= render partial: 'form', locals: { f: form} %>
+  </div>
 <% end %>

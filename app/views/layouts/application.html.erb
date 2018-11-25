@@ -9,29 +9,63 @@
   </head>
 
   <body>
-    <div class="header-container" style="background-color: yellow;display: flex; justify-content: space-between; align-items: center; padding-right: 2%; padding-left: 2%">
-      <div class="header-title">
-        <h1><%= link_to "Balaboosta", '/'%> </h1>
-      </div>
-
-      <% if logged_in? %>
-      <div class="header-nav-container" style="width: 50%;">
-        <ul style="list-style-type: none;margin: 0;padding: 0;">
-          <li style="float: right;"><%=link_to "Logout", logout_path, method: "delete"%></li>
-          <li style="float: right;margin-right: 5%;"><%=link_to "Tours", tours_path%></li>
-          <li style="float: right;margin-right: 5%;"><%=link_to "Guests", guests_path%></li>
+    <% if logged_in? %>
+      <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark shadow">
+        <%= link_to "Balaboosta", '/', { :class=>"navbar-brand" }%>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <%=link_to "Tours", tours_path, { :class=>"nav-link" }%>
+          </li>
+          <li class="nav-item">
+            <%=link_to "Guests", guests_path, { :class=>"nav-link" }%>
+          </li>
           <% if is_admin? %>
-            <li style="float: right;margin-right: 5%;"><%=link_to "Payments", payments_path%></li>
-            <li style="float: right;margin-right: 5%;"><%=link_to "Users", users_path%></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Admin
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <%=link_to "Users", users_path, { :class=>"dropdown-item"}%>
+                <div class="dropdown-divider"></div>
+                <%=link_to "Payments", payments_path, { :class=>"dropdown-item"}%>
+              </div>
+            </li>
           <% end %>
+          </ul>
+          <ul class="navbar-nav ml-auto"
+            <div class="navbar-form">
+              <div class="btn-group">
+                <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= current_user ? current_user.formatted_name : "Account"%>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                  <%=link_to "Account", user_path(current_user), {:class=>"dropdown-item"} if current_user%>
+                  <div class="dropdown-divider"></div>
+                  <%=link_to "Logout", logout_path, method: "delete", class: "dropdown-item" %>
+                </div>
+              </div>
+            </div>
         </ul>
       </div>
-      <%end%>
-    </div>
+    </nav>
+  <%end%>
 
 
-    <div class="body-container" style="padding-right: 2%; padding-left: 2%">
-      <%= yield %>
-    </div>
+      <div class="container-fluid main-wrapper">
+        <div class="row">
+          <nav class="col-md-2 d-none d-md-block sidebar" >
+            <div class="sidebar-sticky">
+              <%= yield(:side_bar) %>
+            </div>
+          </nav>
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <%= yield %>
+          </main>
+        </div>
+      </div>
   </body>
 </html>

@@ -1,0 +1,94 @@
+@import "bootstrap";
+@import "session";
+@import "simple_calendar";
+
+html, body{
+  height: 100vh;
+  width: 100vw;
+  background-color: #f5f5f5;
+}
+
+// .navbar{
+//   height: 6vh;
+// }
+
+.row{
+  height: 100%;
+}
+
+.main-wrapper{
+  height: 100vh;
+}
+
+.sidebar{
+  padding-top: 70px;
+  background-color: #ffffff;
+}
+
+[role="main"] {
+    padding-top: 70px;
+    overflow: auto;
+}
+
+.simple-calendar{
+  .day{
+    height: 6vw;
+  }
+  .td{
+    width: 6vw;
+  }
+}
+
+.tour_filters{
+  margin-top: 1em;
+}
+
+.tours-container{
+  margin-top: 20px;
+  .tours-list{
+    display: flex;
+    flex-wrap: wrap;
+    .card{
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+  }
+}
+
+.guest-container{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  .guest-list{
+    display: flex;
+    flex-wrap: wrap;
+    .card{
+      width: 40%;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+  }
+}
+
+.checkbox-label{
+  margin-right: 0.5em;
+}
+
+.new-guest-link{
+  margin-top: 1em;
+}
+
+.reservation_button{
+  margin-top: 1em;
+}
+
+.comment__delete{
+
+}
+
+.update_reservation_container{
+  margin-top: 1em;
+}
+
+.guest__upcoming-tours, .guest__past-tours{
+  margin-top: 1rem;
+}

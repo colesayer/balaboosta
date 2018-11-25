@@ -1,8 +1,33 @@
-<h1>Hello, <%=@user.formatted_name%></h1>
 
-<h2>Upcoming Tours</h2>
-<ul>
-<% @upcoming_tours.each do |tour| %>
-  <li><%= link_to tour.formatted_name, tour_path(tour.id) %></li>
+<!-- <div class="row h-10">
+  <h1>Hello, <%=@user.formatted_name%></h1>
+</div> -->
+<div class="row">
+  <div class="container">
+    <%= month_calendar events: @tours do |date, tours| %>
+      <%= date.day %>
+
+      <% tours.each do |tour| %>
+        <div>
+          <%= link_to tour.calendar_name, tour_path(tour.id) %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<% content_for :side_bar do %>
+  <h4>Upcoming Tours</h4>
+  <ul class="list-group">
+  <% @upcoming_tours.each do |tour| %>
+    <li class="list-group-item"><%= link_to tour.formatted_name, tour_path(tour.id) %></li>
+  <% end %>
+  </ul>
+
+  <!-- how many tours this month
+  how many guests this month -->
+
+  <%# TODO: tours that need approval *admin only %>
+  <%# TODO: some kind of notification for tours with notes, especially ones that need approval %>
+  
 <% end %>
-</ul>

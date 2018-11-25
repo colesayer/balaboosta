@@ -1,25 +1,6 @@
-<%= form_for @tour do |f|%>
-
-  <%=f.label 'Name:'%>
-  <br>
-  <%=f.text_field :name%>
-  <br>
-
-  <%=f.label 'Date:'%>
-  <br>
-  <%=f.text_field :date%>
-  <br>
-
-  <%=f.label 'Start Time:'%>
-  <br>
-  <%=f.text_field :start_time%>
-  <br>
-
-  <%=f.label 'Price:'%>
-  <br>
-  <%=f.text_field :fee%>
-  <br>
-
-
-  <%= f.submit "Update Tour" %>
-<%end%>
+<%= form_for @tour do |form| %>
+  <div class="container">
+    <h1> Edit the <%=@tour.formatted_name%> tour: </h1>
+    <%= render partial: 'form', locals: { f: form} %>
+  </div>
+<% end %>

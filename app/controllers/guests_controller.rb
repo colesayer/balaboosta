@@ -1,11 +1,6 @@
 class GuestsController < ApplicationController
 
   def index
-    # @guests = if params[:search]
-    # Guest.where('first_name LIKE ?', "%#{params[:search]}%")
-    # else
-    #   Guest.all
-    # end
     @guests = Guest.search(params[:search])
   end
 

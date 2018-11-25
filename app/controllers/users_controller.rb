@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :admin_required, except: [:current_user_home, :homepage, :show, :edit, :update, :edit_password, :update_password], if: :params_match_user?
 
   def index
-      @users = User.all
+      @users = User.search(params[:search])
   end
 
   def current_user_home

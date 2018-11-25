@@ -8,9 +8,11 @@ class Tour < ApplicationRecord
   has_many :tour_users
   has_many :users, through: :tour_users
   has_many :payments
+  has_many :comments, as: :noteable
 
   scope :past_needs_approval, -> { where('start_time < ? AND is_approved != ?', Date.today, true)}
   scope :past_approved, -> { where('start_time < ? AND is_approved = ?', Date.today, true)}
+  scope :past, -> { where('start_time < ?', Date.today)}
   scope :upcoming, -> { where('start_time > ?', Date.today )}
 
 
@@ -44,9 +46,17 @@ class Tour < ApplicationRecord
   def num_enrolled
     enrolled = 0
     self.tour_guests.each do |tour|
-      enrolled += tour.num_guests if tour.num_guests
+      enrolled += tour.num_guests if tour.num_guests && !tour.is_cancelled
     end
     enrolled
+  end
+
+  def num_cancelled
+    cancelled = 0
+    self.tour_guests.each do |tour|
+      cancelled += tour.num_guests if tour.num_guests && tour.is_cancelled
+    end
+    cancelled
   end
 
   def is_past?

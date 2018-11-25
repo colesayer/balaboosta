@@ -17,20 +17,8 @@
     <div class="tours-container">
       <h2>Upcoming Tours</h2>
 
-      <div class="tours-list">
-        <% @upcoming_tours.each do |tour| %>
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title"><%=tour.location.name%></h5>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
-                  <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
-                  <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
-                </ul>
-              </div>
-            </div>
-        <% end %>
-      </div>
+      <%= render partial: 'tour_list', locals: { tours: @upcoming_tours} %>
+
     </div>
   </div>
 
@@ -49,36 +37,10 @@
 
       <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade show active" id="pills-needs-approval" role="tabpanel" aria-labelledby="pills-needs-approval-tab">
-          <div class="tours-list">
-          <% @past_tours_needs_approval.each do |tour| %>
-            <div class="card shadow">
-              <div class="card-body">
-                <h5 class="card-title"><%=tour.location.name%></h5>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
-                  <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
-                  <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
-                </ul>
-              </div>
-            </div>
-          <% end %>
-          </div>
+          <%= render partial: 'tour_list', locals: { tours: @past_tours_needs_approval} %>
         </div>
         <div class="tab-pane fade" id="pills-approved" role="tabpanel" aria-labelledby="pills-approved-tab">
-          <div class="tours-list">
-            <% @past_tours_approved.each do |tour| %>
-              <div class="card shadow">
-                <div class="card-body">
-                  <h5 class="card-title"><%=tour.location.name%></h5>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
-                    <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
-                    <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
-                  </ul>
-                </div>
-              </div>
-            <% end %>
-          </div>
+          <%= render partial: 'tour_list', locals: { tours: @past_tours_approved} %>
         </div>
         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
       </div>
@@ -87,13 +49,31 @@
 
 
 <% content_for :side_bar do %>
-  <p><%= link_to "+ Add Tour", new_tour_path%></p>
 
 <div class="container">
-  <%= form_tag(tours_path, method: :get) do %>
-    <div class="form-check">
-      <% if params[:location_filter].present? %>
-        <%= collection_check_boxes(:location_filter, :location_id, Location.all, :id, :name, {include_hidden: false, checked: params[:location_filter][:location_id]}) do |b| %>
+  <div class="container">
+    <%= link_to "Add Tour", new_tour_path, :class => "btn btn-primary" %>
+  </div>
+
+  <div class="container tour_filters">
+    <%= form_tag(tours_path, method: :get) do %>
+      <div class="form-check">
+        <% if params[:location_filter].present? %>
+          <%= collection_check_boxes(:location_filter, :location_id, Location.all, :id, :name, {include_hidden: false, checked: params[:location_filter][:location_id]}) do |b| %>
+            <div class="row">
+              <%= b.label(class: "check_box") do %>
+                <div class="col-xs-4">
+                  <%= b.check_box(class: "form-check-input") %>
+                </div>
+
+                <div class="col-xs-8">
+                  <%= b.object.name %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+        <%= collection_check_boxes(:location_filter, :location_id, Location.all, :id, :name, {include_hidden: false}) do |b| %>
           <div class="row">
             <%= b.label(class: "check_box") do %>
               <div class="col-xs-4">
@@ -105,26 +85,12 @@
               </div>
             <% end %>
           </div>
+
         <% end %>
-      <% else %>
-      <%= collection_check_boxes(:location_filter, :location_id, Location.all, :id, :name, {include_hidden: false}) do |b| %>
-        <div class="row">
-          <%= b.label(class: "check_box") do %>
-            <div class="col-xs-4">
-              <%= b.check_box(class: "form-check-input") %>
-            </div>
-
-            <div class="col-xs-8">
-              <%= b.object.name %>
-            </div>
-          <% end %>
-        </div>
-
-      <% end %>
-      <% end %>
-    </div>
-    <%= submit_tag("Filter", :id=>"button", :class=>"btn btn-outline-primary") %>
-  <% end %>
+        <% end %>
+      </div>
+      <%= submit_tag("Filter", :id=>"button", :class=>"btn btn-outline-primary") %>
+    <% end %>
+  </div>
 </div>
-
 <% end %>

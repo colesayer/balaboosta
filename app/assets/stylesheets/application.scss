@@ -39,6 +39,10 @@ html, body{
   }
 }
 
+.tour_filters{
+  margin-top: 1em;
+}
+
 .tours-container{
   margin-top: 20px;
   .tours-list{
@@ -49,4 +53,42 @@ html, body{
       margin-top: 20px;
     }
   }
+}
+
+.guest-container{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  .guest-list{
+    display: flex;
+    flex-wrap: wrap;
+    .card{
+      width: 40%;
+      margin-right: 20px;
+      margin-top: 20px;
+    }
+  }
+}
+
+.checkbox-label{
+  margin-right: 0.5em;
+}
+
+.new-guest-link{
+  margin-top: 1em;
+}
+
+.reservation_button{
+  margin-top: 1em;
+}
+
+.comment__delete{
+
+}
+
+.update_reservation_container{
+  margin-top: 1em;
+}
+
+.guest__upcoming-tours, .guest__past-tours{
+  margin-top: 1rem;
 }

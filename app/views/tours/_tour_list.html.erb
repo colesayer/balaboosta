@@ -1,0 +1,27 @@
+<div class="tours-list">
+  <% tours.each do |tour| %>
+      <div class="card shadow">
+        <div class="card-body">
+
+          <h5 class="card-title d-flex justify-content-between align-items-center">
+            <%=tour.location.name%>
+            <% if tour.comments.length > 0 %>
+              <span class="badge badge-pill badge-danger" data-toggle="modal" data-target="#tourNoteModal<%=tour.id%>">
+                <%= tour.comments.length if tour.comments.length > 0%>
+              </span>
+            <% end %>
+          </h5>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><%=tour.formatted_date_long%> at <%=tour.formatted_time%></li>
+            <li class="list-group-item">Guests Enrolled: <%= tour.num_enrolled %></li>
+            <li class="list-group-item"><%=link_to "Tour Page", tour_path(tour.id), {:class=>"card-link"}%></li>
+          </ul>
+
+        </div>
+      </div>
+
+
+
+  <% end %>
+</div>

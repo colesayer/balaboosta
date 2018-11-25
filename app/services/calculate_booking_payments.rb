@@ -12,7 +12,7 @@ class CalculateBookingPayments
       booking_payment = {}
       booking_payment[:user_id] = reservation.user.id
       booking_payment[:tour_id] = @tour.id
-      if reservation.user.first_name == "Neta"
+      if reservation.user.first_name == "Neta" && !reservation.is_cancelled
         booking_payment[:payment] = @tour.base_price * reservation.num_guests * 0.20
       elsif reservation.user.first_name == "Noa"
         booking_payment[:payment] = reservation.num_guests * 3

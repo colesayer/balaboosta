@@ -1,7 +1,12 @@
 class GuestsController < ApplicationController
 
   def index
-    @guests = Guest.all
+    # @guests = if params[:search]
+    # Guest.where('first_name LIKE ?', "%#{params[:search]}%")
+    # else
+    #   Guest.all
+    # end
+    @guests = Guest.search(params[:search])
   end
 
   def show
@@ -59,7 +64,7 @@ class GuestsController < ApplicationController
     @guest = Guest.find_by(id: params[:id])
     @tour = Tour.find_by(id: params[:tour_id])
     @tour_guest = @guest.tour_guests.find_by(tour_id: @tour.id)
-    if @tour_guest.update(num_guests: params[:num_guests], user_id: params[:user_id][:id])
+    if @tour_guest.update(num_guests: params[:num_guests], user_id: params[:user_id][:id], is_confirmed: params[:is_confirmed], is_cancelled: params[:is_cancelled])
       redirect_to guest_path(@guest)
     else
       render "/guests/#{@guest.id}/edit_tour/#{@tour.id}"
@@ -77,7 +82,7 @@ class GuestsController < ApplicationController
   private
 
   def guest_params
-    params.require(:guest).permit(:first_name, :last_name, :email, :phone, :tour_ids)
+    params.require(:guest).permit(:first_name, :last_name, :email, :phone, :tour_ids, :search)
   end
 
   def tour_params

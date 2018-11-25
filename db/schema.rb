@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181122164803) do
+ActiveRecord::Schema.define(version: 20181124181951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.string "content"
+    t.boolean "is_important", default: false, null: false
+    t.string "noteable_type"
+    t.bigint "noteable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["noteable_type", "noteable_id"], name: "index_comments_on_noteable_type_and_noteable_id"
+  end
 
   create_table "discounts", force: :cascade do |t|
     t.string "name"
@@ -28,7 +38,6 @@ ActiveRecord::Schema.define(version: 20181122164803) do
     t.string "email"
     t.string "phone"
     t.boolean "subscribed", default: false, null: false
-    t.integer "note_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -39,18 +48,10 @@ ActiveRecord::Schema.define(version: 20181122164803) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "notes", force: :cascade do |t|
-    t.text "body"
-    t.boolean "is_important", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "payments", force: :cascade do |t|
     t.integer "user_id"
     t.decimal "amount", precision: 8, scale: 2
     t.boolean "paid", default: false, null: false
-    t.integer "note_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "tour_id"
@@ -69,7 +70,6 @@ ActiveRecord::Schema.define(version: 20181122164803) do
     t.integer "user_id"
     t.boolean "is_confirmed", default: false, null: false
     t.boolean "is_cancelled", default: false, null: false
-    t.integer "note_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 20181122164803) do
     t.string "date"
     t.decimal "base_price", precision: 8, scale: 2
     t.boolean "is_private", default: false, null: false
-    t.integer "note_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "location_id"

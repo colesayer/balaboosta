@@ -1,10 +1,40 @@
-<p><%= link_to "+ Add Guest", new_guest_path%></p>
 
-<% @guests.each do |guest| %>
-<hgroup>
-  <h1><%= link_to guest.first_name + " " + guest.last_name, guest_path(guest.id) %></h1>
-  <h2><%= guest.email %></h2>
-  <h3><%= guest.phone %></h3>
-  <hr>
-</hgroup>
-<%end%>
+  <%= form_tag guests_path, :method => :get, :class => 'form-inline' do %>
+      <div class="form-group mb-2" style="margin-right: 1rem;">
+        <%= text_field_tag :search, params[:search], class: "form-control"  %>
+      </div>
+      <%= submit_tag "Search", :name => nil, :class => 'btn btn-outline-primary mb-2' %>
+  <% end %>
+
+
+<div class="table-responsive border" style="background-color: white;">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <% @guests.each do |guest| %>
+        <tr id="guest_info" data-link="<%= guest_path(guest)%>">
+          <th scope="row"><%= link_to guest.id, guest_path(guest) %></th>
+          <td><%=guest.first_name%></td>
+          <td><%=guest.last_name%></td>
+          <td><%=guest.email%></td>
+          <td><%=guest.phone%></td>
+
+        <tr>
+      <%end%>
+    </tbody>
+  </table
+</div>
+
+
+<% content_for :side_bar do %>
+  <p><%= link_to "+ Add Guest", new_guest_path%></p>
+<% end %>

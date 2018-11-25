@@ -1,15 +1,95 @@
+
+
 <h1>Edit <%=@guest.formatted_name%>'s <%=@tour.location.name%> Tour</h1>
 
-<%=form_tag "/guests/#{@guest.id}/edit_tour/#{@guest.id}" do %>
-  <%= label_tag 'Number of guests:' %>
-  <br>
-  <%= select_tag :num_guests, options_for_select((1..20), @tour_guest.num_guests) %>
-  <br>
-  <br>
-  <%= label_tag 'Booked by:' %>
-  <br>
-  <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:selected => @tour_guest.user_id} %>
-  <br>
-  <br>
-  <%= submit_tag "Update Tour", class: ''%>
-<%end%>
+<div class = "container comments_container">
+  <% if @tour_guest.comments.length > 0 %>
+    <h4> Notes: </h4>
+      <ul class="list-group">
+        <% @tour_guest.comments.reverse.each do |comment| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center <%="list-group-item-danger" if comment.is_important %>">
+            <%= comment.content %>
+            <%= link_to "X", "/tours/#{@tour.id}/edit_tour/#{@guest.id}/#{comment.id}", class: "badge badge-secondary", method: 'delete', data: { confirm: "Really?" } %>
+          </li>
+        <% end %>
+      </ul>
+  <% end %>
+
+  <button type="button" class="btn btn-outline-primary reservation_button" data-toggle="modal" data-target="#commentModal">
+    Add Note
+  </button>
+
+  <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="commentModalLabel">Add a Note</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%=form_tag "/tours/#{@tour.id}/edit_tour/#{@guest.id}/append_note" do %>
+
+          <div class="modal-body">
+
+              <div class="form-group">
+                <%= label_tag 'Note:' %>
+                <%= text_area_tag :content, "", class: 'form-control'%>
+              </div>
+
+              <div class="field form-group">
+                <div class="checkbox-inline">
+                  <%= label_tag 'Important:', nil, class: 'checkbox-label'%>
+                  <%= hidden_field_tag :is_important, false %>
+                  <%= check_box_tag :is_important, true, false %>
+                </div>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <%= submit_tag "Add Note", class: 'btn btn-primary'%>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class = "container update_reservation_container">
+
+  <h4> Edit Reservation: </h4>
+
+  <%=form_tag "/guests/#{@guest.id}/edit_tour/#{@tour.id}" do %>
+    <div class="form-group">
+      <%= label_tag 'Number of guests:' %>
+      <%= select_tag :num_guests, options_for_select((1..20), @tour_guest.num_guests), class: 'form-control' %>
+    </div>
+
+
+    <div class="form-group">
+      <%= label_tag 'Booked by:' %>
+      <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:selected => @tour_guest.user_id}, class: 'form-control' %>
+    </div>
+
+    <div class="field form-group">
+      <div class="checkbox-inline">
+        <%= label_tag 'Confirmed:', nil, class: 'checkbox-label'%>
+        <%= hidden_field_tag :is_confirmed, false %>
+        <%= check_box_tag :is_confirmed, true, @tour_guest.is_confirmed %>
+      </div>
+    </div>
+
+    <div class="field form-group">
+      <div class="checkbox-inline">
+        <%= label_tag 'Cancelled:', nil, class: 'checkbox-label'%>
+        <%= hidden_field_tag :is_cancelled, false %>
+        <%= check_box_tag :is_cancelled, true, @tour_guest.is_cancelled %>
+      </div>
+    </div>
+
+
+    <%= submit_tag "Update Tour", class: 'btn btn-primary'%>
+  <%end%>
+</div>

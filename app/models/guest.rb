@@ -21,6 +21,19 @@ class Guest < ApplicationRecord
     self.tour_guests.find_by(tour_id: tour.id).user.formatted_name
   end
 
+  def self.search(search)
+  if search
+    name = search.split(' ')
+    if name.length < 2
+      where('first_name LIKE :search OR last_name LIKE :search', search: "%#{name[0]}%")
+    else
+      where("first_name LIKE ? AND last_name LIKE ?", "%#{name[0]}","%#{name[1]}")
+    end
+  else
+    all
+  end
+end
+
   private
 
   def destroy_tour_guests

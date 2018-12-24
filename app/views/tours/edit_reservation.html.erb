@@ -3,11 +3,28 @@
 <div class = "container comments_container">
   <% if @tour_guest.comments.length > 0 %>
     <h4> Notes: </h4>
-      <ul class="list-group">
+      <ul class="list-group" style="list-style: none;">
         <% @tour_guest.comments.reverse.each do |comment| %>
-          <li class="list-group-item d-flex justify-content-between align-items-center <%="list-group-item-danger" if comment.is_important %>">
-            <%= comment.content %>
-            <%= link_to "X", "/tours/#{@tour.id}/edit_tour/#{@guest.id}/#{comment.id}", class: "badge badge-secondary", method: 'delete', data: { confirm: "Really?" } %>
+          <% user = User.where(["id = ?", "#{comment.user_id}"]) %>
+
+          <li style="margin-bottom: 20px;">
+            <div class="card <%="border-danger" if comment.is_important %> ">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="comment-signature">
+                  <%= "#{user[0].first_name} #{user[0].last_name} - #{comment.created_at.strftime("%m/%d/%Y at %I:%M%p")}"  %>
+                </div>
+                <div class="comment-delete-button">
+                  <%= link_to "X", "/tours/#{@tour.id}/#{comment.id}", class: "badge badge-secondary", method: 'delete', data: { confirm: "Really?" } %>
+                </div>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div class="comment-content">
+                    <%= "#{comment.content}"%>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </li>
         <% end %>
       </ul>
@@ -57,7 +74,9 @@
 
 <div class = "container update_reservation_container">
 
-  <h4> Edit Reservation: </h4>
+  <h4> Edit Reservation: <%= @tour_guest.id %></h4>
+
+
 
   <%=form_tag "/tours/#{@tour.id}/edit_tour/#{@guest.id}" do %>
     <div class="form-group">
@@ -87,6 +106,16 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <%= label_tag 'Add discount:' %>
+      <%= collection_select :discount_id, :id, Discount.all, :id, :name, include_blank: "None", :selected => hasDiscount(@tour_guest), class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'Number of discounted guests:' %>
+
+      <%= select_tag :discount_num_ppl, options_for_select((0..@tour_guest.num_guests), (@tour_guest.tour_guest_discounts[0] ? @tour_guest.tour_guest_discounts[0].num_ppl : 0)), class: 'form-control' %>
+    </div>
 
     <%= submit_tag "Update Tour", class: 'btn btn-primary'%>
   <%end%>

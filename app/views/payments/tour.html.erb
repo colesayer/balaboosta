@@ -1,0 +1,55 @@
+<h1><%= @tour.formatted_name %></h1>
+<h2>Net after discounts: <%=number_to_currency(@tour.net_amount, :unit => "$")%></h2>
+<h2><%= @tour.is_past? ? "There were" : "There are currently" %> <%=@tour.num_enrolled%> guests enrolled.</h2>
+<h2><%= @tour.is_past? ? "There were" : "There are currently" %> <%=@tour.num_cancelled%> cancellations.</h2>
+
+<div class = "comments_container">
+  <% if @tour.comments.length > 0 %>
+    <h4> Notes: </h4>
+      <ul class="list-group" style="list-style: none;">
+        <% @tour.comments.reverse.each do |comment| %>
+          <% user = User.where(["id = ?", "#{comment.user_id}"]) %>
+
+          <li style="margin-bottom: 20px;">
+            <div class="card <%="border-danger" if comment.is_important %> ">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="comment-signature">
+                  <%= "#{user[0].first_name} #{user[0].last_name} - #{comment.created_at.strftime("%m/%d/%Y at %I:%M%p")}"  %>
+                </div>
+                <div class="comment-delete-button">
+                  <%= link_to "X", "/tours/#{@tour.id}/#{comment.id}", class: "badge badge-secondary", method: 'delete', data: { confirm: "Really?" } %>
+                </div>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div class="comment-content">
+                    <%= "#{comment.content}"%>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+  <% end %>
+</div>
+
+<div class="payments-container">
+  <div class="payments-list">
+    <% @payments.each do |payment| %>
+      <div class="card payment-card shadow">
+        <h5 class="card-header"><%= payment.user.formatted_name %></h5>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Amount Owed: <%=number_to_currency(payment.amount, :unit => "$")%></li>
+          </ul>
+          <% if !payment.paid %>
+            <a href="#" class="btn btn-primary payment-card__button">Confirm Payment</a>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

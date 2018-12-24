@@ -63,6 +63,11 @@ class Tour < ApplicationRecord
     start_time < Date.today
   end
 
+  def calculate_net_amount
+    net = CalculateTourNet.new(self)
+    net.total_amount_owed
+  end
+
   def calculate_payment
     calculations = []
 
@@ -70,13 +75,14 @@ class Tour < ApplicationRecord
     guide = CalculateTourguidePayments.new(self)
     tour_guide[:payment] = guide.calculate_payment
     tour_guide[:user_id] = guide.get_user_id[0]
+    calculations << tour_guide
 
     booker = {}
     booking = CalculateBookingPayments.new(self).calculate_payment
     booking.each do |book|
       calculations << book
     end
-    calculations << tour_guide
+
     return calculations
   end
 

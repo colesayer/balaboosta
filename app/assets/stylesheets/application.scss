@@ -69,6 +69,22 @@ html, body{
   }
 }
 
+.payments-container{
+  margin-bottom: 20px;
+  .payments-list{
+    display: flex;
+    flex-wrap: wrap;
+    .payment-card{
+      width: 40%;
+      margin-right: 20px;
+      margin-top: 20px;
+      .payment-card__button{
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
 .checkbox-label{
   margin-right: 0.5em;
 }

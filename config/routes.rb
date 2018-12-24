@@ -38,4 +38,7 @@ Rails.application.routes.draw do
 
 
   resources :payments
+
+  get '/payments/tours/:tour_id', to: 'payments#tour', as: 'payment_tour'
+
 end

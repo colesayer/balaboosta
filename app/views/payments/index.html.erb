@@ -1,9 +1,35 @@
-<% @payments.each do |payment| %>
-  <p>Recipient: <%=payment.user.formatted_name%></p>
-  <p>Amount: <%=number_to_currency(payment.amount, :unit => "$")%></p>
-  <p>Tour: <%=payment.tour.formatted_name if payment.tour%></p>
-  <hr>
+<% if false %>
+  <% @payments.each do |payment| %>
+    <p>Recipient: <%=payment.user.formatted_name%></p>
+    <p>Amount: <%=number_to_currency(payment.amount, :unit => "$")%></p>
+    <p>Tour: <%=payment.tour.formatted_name if payment.tour%></p>
+    <hr>
+  <% end %>
 <% end %>
 
+<div class="table-responsive border" style="background-color: white;">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Location</th>
+        <th scope="col">Date</th>
+        <th scope="col">Private</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @tours.each do |tour| %>
+        <% next if tour == nil %>
+        <tr id="tour_info">
+          <th scope="row"><%= link_to tour.id, payment_tour_path(tour.id) %></th>
+          <td><%=tour.location.name%></td>
+          <td><%=tour.formatted_date_short%></td>
+          <td><%=tour.is_private%></td>
+        <tr>
+      <%end%>
+    </tbody>
+  </table
+</div>
 
 <%# TODO: Group things by tour, add paid button %>

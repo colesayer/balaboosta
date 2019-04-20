@@ -6,6 +6,7 @@ class Group < ApplicationRecord
   has_many :comments, as: :noteable
 
   def num_enrolled
+    binding.pry
     0
   end
 end

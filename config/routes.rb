@@ -40,6 +40,9 @@ Rails.application.routes.draw do
 
   post '/groups/:id/append_note', to: 'groups#append_note_group'
   delete '/groups/:id/:comment_id', to: 'groups#remove_note_group'
+  post '/groups/:id/add_guest', to: 'groups#add_guest'
+  delete '/groups/:id/remove_guest/:guest_id', to: 'groups#remove_guest'
+  post '/guests/:id/add_tour', to: 'groups#add_tour'
 
   resources :payments
 

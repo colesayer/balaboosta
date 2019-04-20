@@ -69,5 +69,76 @@
       </div>
     </div>
   </div>
-
 </div>
+
+<div class="guest-container">
+  <div class="guest-list">
+    <% @group.group_guests.each do |member| %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title d-flex justify-content-between align-items-center"><%=member.guest.first_name + " " + member.guest.last_name%></h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Phone: <%= member.guest.phone%></li>
+            <li class="list-group-item">Email: <%= member.guest.email%></li>
+
+            <li class="list-group-item">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <%= link_to "Delete", "/groups/#{@group.id}/remove_guest/#{member.guest.id}", :class => 'btn btn-link', method: 'delete', data: { confirm: "Really?" } %>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+
+<% content_for :side_bar do %>
+  <div class="container" >
+    <h4>Add a Guest</h4>
+
+    <%=form_tag "/groups/#{@group.id}/add_guest" do %>
+
+      <div class="form-group">
+        <%= label_tag 'Guest:' %>
+        <%= collection_select :guest, :id, Guest.all, :id, :formatted_name, {:prompt => true}, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag 'Booked by:' %>
+        <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:prompt => true}, class: 'form-control' %>
+      </div>
+
+      <%= submit_tag "Add Guest", class: 'btn btn-primary'%>
+    <%end%>
+
+  </div>
+
+  <div class="container new-guest-link">
+    <%= link_to "+ new guest", new_guest_path%>
+  </div>
+
+  <div class="container">
+    <h4>Add a Tour</h4>
+
+    <%=form_tag "/groups/#{@group.id}/add_tour" do %>
+
+      <div class="form-group">
+        <%= label_tag 'Select a tour:' %>
+        <%= collection_select :tour, :id, Tour.all, :id, :formatted_name, {:prompt => true}, class: 'form-control' %>
+      </div>
+
+      <!-- <div class="form-group">
+        <%= label_tag 'Number of guests:' %>
+        <%= select_tag :num_guests, options_for_select(1..20), class: 'form-control' %>
+      </div> -->
+
+      <div class="form-group">
+        <%= label_tag 'Booked by:' %>
+        <%= collection_select :user_id, :id, User.all, :id, :formatted_name, {:prompt => true}, class: 'form-control' %>
+      </div>
+
+      <%= submit_tag "Add Tour", class: 'btn btn-primary'%>
+    <%end%>
+  </div>
+<% end %>

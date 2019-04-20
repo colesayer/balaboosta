@@ -50,6 +50,24 @@ class GroupsController < ApplicationController
     end
   end
 
+  def remove_guest
+    guest = Guest.all.find(params[:guest_id])
+    guest_group = guest.group_guests.find_by(group_id: params[:id])
+    guest_group.destroy
+    redirect_to group_path(params[:id])
+  end
+
+  def add_tour
+    binding.pry
+    @tour_guest = TourGuest.new(guest_id: params[:id], tour_id: params[:tour][:id], num_guests: params[:num_guests], user_id: params[:user_id][:id])
+    if @tour_guest.save
+      redirect_to guest_path(params[:id])
+    else
+      redirect_to guests_path
+    end
+  end
+
+
   def append_note_group
     @group = Group.find_by(id: params[:id])
     @user = current_user
@@ -66,6 +84,19 @@ class GroupsController < ApplicationController
     comment = Comment.all.find_by(id: params[:comment_id])
     comment.destroy
     redirect_to group_path(params[:id])
+  end
+
+  def add_guest
+    @group = Group.find_by(id: params[:id])
+    @group_guest = GroupGuest.new(guest_id: params[:guest][:id], group_id: params[:id], user_id: params[:user_id][:id])
+    # subtotal = calculateAmountOwed(@tour, @tour_guest)
+    # @tour_guest.amount_owed = subtotal
+
+    if @group_guest.save
+      redirect_to group_path(params[:id])
+    else
+      redirect_to groups_path
+    end
   end
 
   private

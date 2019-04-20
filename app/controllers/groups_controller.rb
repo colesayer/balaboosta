@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  include TourHelper
+
   def index
     @groups = Group.all
   end
@@ -58,15 +60,32 @@ class GroupsController < ApplicationController
   end
 
   def add_tour
-    binding.pry
-    @tour_guest = TourGuest.new(guest_id: params[:id], tour_id: params[:tour][:id], num_guests: params[:num_guests], user_id: params[:user_id][:id])
-    if @tour_guest.save
-      redirect_to guest_path(params[:id])
+    group = Group.find_by(id: params[:id])
+    @tour = Tour.find_by(id: params[:tour][:id])
+    group.group_guests.each do |guest|
+      @tour_guest = TourGuest.new(guest_id: guest.id, tour_id: params[:tour][:id], num_guests: 1, user_id: params[:user_id][:id])
+      subtotal = calculateAmountOwed(@tour, @tour_guest)
+      @tour_guest.amount_owed = subtotal
+      @tour_guest.save
+    end
+    group_tour = GroupTour.new(group_id: params[:id], tour_id: params[:tour][:id])
+    if group_tour.save
+      redirect_to group_path(params[:id])
     else
-      redirect_to guests_path
+      redirect_to groups_path
     end
   end
 
+  def remove_tour
+    group = Group.all.find(params[:id])
+    group_tour = group.group_tours.find_by(tour_id: params[:tour_id])
+    group.group_guests.each do |guest|
+      tour_guest = TourGuest.find_by(guest_id: guest.id, tour_id: params[:tour_id])
+      tour_guest&.destroy if tour_guest
+    end
+    group_tour.destroy
+    redirect_to group_path(group)
+  end
 
   def append_note_group
     @group = Group.find_by(id: params[:id])

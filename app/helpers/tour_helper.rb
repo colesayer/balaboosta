@@ -8,7 +8,7 @@ module TourHelper
     end
   end
 
-  def calculateAmountOwed(tour, reservation, discount = nil, num_ppl = 0)
+  def calculateAmountOwed(tour, reservation, discount = nil, num_ppl = 1)
     if discount
       discount_amount = discount.percentage_amount * tour.base_price * num_ppl
       (tour.base_price * reservation.num_guests) - discount_amount

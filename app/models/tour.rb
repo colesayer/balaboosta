@@ -7,6 +7,8 @@ class Tour < ApplicationRecord
   belongs_to :location
   has_many :tour_users
   has_many :users, through: :tour_users
+  has_many :group_tours
+  has_many :groups, through: :group_tours
   has_many :payments
   has_many :comments, as: :noteable
 

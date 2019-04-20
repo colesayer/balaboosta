@@ -2,12 +2,16 @@ class Guest < ApplicationRecord
   has_many :tour_guests
   has_many :tours, through: :tour_guests
   accepts_nested_attributes_for :tour_guests
+  has_many :group_guests
+  has_many :groups, through: :group_guests
+  accepts_nested_attributes_for :group_guests
 
   validates :email, uniqueness: true
   validates :first_name, presence: true,  length: { minimum: 2 }
   validates :last_name, presence: true,  length: { minimum: 2 }
 
   before_destroy :destroy_tour_guests
+  before_destroy :destroy_group_guests
 
   def formatted_name
     "#{self.first_name} #{self.last_name}"

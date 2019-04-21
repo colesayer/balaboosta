@@ -43,8 +43,13 @@ class ToursController < ApplicationController
   def create
     convert_date_time(params[:tour][:start_time_time], params[:tour][:start_time_date])
     @tour = Tour.new(tour_params)
-    @tour.save
-    redirect_to tour_path(@tour)
+
+    if @tour.save
+      redirect_to tour_path(@tour)
+    else
+      flash[:error] = "Error adding tour. Please try again."
+      redirect_to tour_path(@tour)
+    end
   end
 
   def edit

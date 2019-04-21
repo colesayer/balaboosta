@@ -16,3 +16,13 @@
 //= require jquery3
 //= require popper
 //= require bootstrap-sprockets
+
+
+$( document ).on('turbolinks:load', function() {
+  var $sidebarToggle = $('.sidebar-toggle');
+  var $sidebar = $('.sidebar');
+  
+  $sidebarToggle.click(function(){
+    $sidebar.toggleClass('open');
+  })
+})

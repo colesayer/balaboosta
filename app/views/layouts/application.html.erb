@@ -6,6 +6,7 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
 
@@ -53,25 +54,23 @@
                 </div>
               </div>
             </div>
-          </ul>
-        </div>
-      </nav>
-    <%end%>
-
-    <div class="container-fluid main-wrapper">
-      <div class="row">
-        <div class="sidebar_wrapper">
-        <nav class="col-md-2 d-none d-md-block sidebar" >
-          <div class="sidebar-sticky">
-            <%= yield(:side_bar) %>
-          </div>
-        </nav>
-        </div>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <%= yield %>
-        </main>
+        </ul>
       </div>
-    </div>
+    </nav>
+  <%end%>
 
+
+      <div class="container-fluid main-wrapper">
+        <div class="row">
+          <nav class="col-md-2 d-none d-md-block sidebar" >
+            <div class="sidebar-sticky">
+              <%= yield(:side_bar) %>
+            </div>
+          </nav>
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+          <%= yield %>
+          </main>
+        </div>
+      </div>
   </body>
 </html>

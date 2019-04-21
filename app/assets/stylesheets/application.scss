@@ -111,12 +111,6 @@ html, body{
 
 .sidebar {
   @include media-breakpoint-down(sm) {
-    display: none !important;
-  }
-}
-
-.dropdown-button-override {
-  @include media-breakpoint-down(md) {
-    max-height: 200px;
+    // display: none !important;
   }
 }

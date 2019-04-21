@@ -105,13 +105,6 @@ ActiveRecord::Schema.define(version: 20190420175424) do
     t.decimal "amount_owed", precision: 8, scale: 2
   end
 
-  create_table "tour_users", force: :cascade do |t|
-    t.integer "tour_id"
-    t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "tours", force: :cascade do |t|
     t.string "date"
     t.decimal "base_price", precision: 8, scale: 2

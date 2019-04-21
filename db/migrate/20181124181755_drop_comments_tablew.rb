@@ -1,5 +1,5 @@
 class DropCommentsTablew < ActiveRecord::Migration[5.1]
-  def change
-    drop_table :comments
-  end
+  # def change
+  #   drop_table :comments
+  # end
 end

@@ -1,0 +1,30 @@
+<div class="groups-container">
+  <h2>Groups: </h2>
+  <div class="groups-list">
+    <% @groups.each do |group| %>
+      <div class="card shadow">
+        <div class="card-body">
+
+          <h5 class="card-title d-flex justify-content-between align-items-center">
+            <%=group.name%>
+              <% if group.comments.length > 0 %>
+                <span class="badge badge-pill badge-danger" data-toggle="modal" data-target="#tourNoteModal<%=tour.id%>">
+                  <%= group.comments.length if group.comments.length > 0%>
+                </span>
+              <% end %>
+          </h5>
+
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Number of Guests: <%= group.num_enrolled %></li>
+            <li class="list-group-item"><%=link_to "Group Page", group_path(group.id), {:class=>"card-link"}%></li>
+          </ul>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% content_for :side_bar do %>
+  <p><%= link_to "+ Add Group", new_group_path%></p>
+<% end %>

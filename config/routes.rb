@@ -36,6 +36,18 @@ Rails.application.routes.draw do
   post '/tours/:id/approve_tour', to: 'tours#approve_tour', as: 'approve_tour'
   delete '/tours/:id/remove_guest/:guest_id', to: 'tours#remove_guest'
 
+  resources :groups, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+
+  post '/groups/:id/append_note', to: 'groups#append_note_group'
+  delete '/groups/:id/:comment_id', to: 'groups#remove_note_group'
+  post '/groups/:id/add_guest', to: 'groups#add_guest'
+  delete '/groups/:id/remove_guest/:guest_id', to: 'groups#remove_guest'
+  get '/groups/:id/add_tour', to: 'groups#new_tour'
+  post '/groups/:id/add_tour', to: 'groups#add_tour'
+  delete "/groups/:id/remove_tour/:tour_id", to: 'groups#remove_tour'
 
   resources :payments
+
+  get '/payments/tours/:tour_id', to: 'payments#tour', as: 'payment_tour'
+
 end

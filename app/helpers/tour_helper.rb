@@ -1,4 +1,5 @@
-module ApplicationHelper
+module TourHelper
+
   def hasDiscount(reservation)
     if reservation&.tour_guest_discounts[0]&.discount_id
       reservation&.tour_guest_discounts[0]&.discount_id
@@ -15,4 +16,5 @@ module ApplicationHelper
       tour.base_price * reservation.num_guests
     end
   end
+
 end

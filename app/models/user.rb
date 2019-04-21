@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :tour_guests
   has_many :tour_users
   has_many :tours, through: :tour_users
+  has_many :comments, as: :noteable
 
   validates :email, uniqueness: true
   validates :first_name, presence: true,  length: { minimum: 2 }
@@ -33,5 +34,5 @@ class User < ApplicationRecord
       all
     end
   end
-  
+
 end

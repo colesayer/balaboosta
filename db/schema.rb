@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181124181951) do
+ActiveRecord::Schema.define(version: 20190420175424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,12 +22,34 @@ ActiveRecord::Schema.define(version: 20181124181951) do
     t.bigint "noteable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
     t.index ["noteable_type", "noteable_id"], name: "index_comments_on_noteable_type_and_noteable_id"
   end
 
   create_table "discounts", force: :cascade do |t|
+    t.decimal "percentage_amount", precision: 6, scale: 5
     t.string "name"
-    t.decimal "amount", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "group_guests", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "guest_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+  end
+
+  create_table "group_tours", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "tour_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -63,6 +85,14 @@ ActiveRecord::Schema.define(version: 20181124181951) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tour_guest_discounts", force: :cascade do |t|
+    t.integer "tour_guest_id"
+    t.integer "discount_id"
+    t.integer "num_ppl"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tour_guests", force: :cascade do |t|
     t.integer "tour_id"
     t.integer "guest_id"
@@ -72,6 +102,7 @@ ActiveRecord::Schema.define(version: 20181124181951) do
     t.boolean "is_cancelled", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "amount_owed", precision: 8, scale: 2
   end
 
   create_table "tour_users", force: :cascade do |t|
@@ -91,6 +122,7 @@ ActiveRecord::Schema.define(version: 20181124181951) do
     t.boolean "is_invoiced", default: false, null: false
     t.boolean "is_approved", default: false, null: false
     t.datetime "start_time"
+    t.decimal "net_amount", precision: 8, scale: 2
   end
 
   create_table "user_roles", force: :cascade do |t|

@@ -1,4 +1,5 @@
 class ToursController < ApplicationController
+  include TourHelper
 
   def index
     @tours = if params[:location_filter]
@@ -16,7 +17,11 @@ class ToursController < ApplicationController
   end
 
   def add_guest
+    @tour = Tour.find_by(id: params[:id])
     @tour_guest = TourGuest.new(guest_id: params[:guest][:id], tour_id: params[:id], num_guests: params[:num_guests], user_id: params[:user_id][:id])
+    subtotal = calculateAmountOwed(@tour, @tour_guest)
+    @tour_guest.amount_owed = subtotal
+
     if @tour_guest.save
       redirect_to tour_path(params[:id])
     else
@@ -63,7 +68,19 @@ class ToursController < ApplicationController
     @tour = Tour.find_by(id: params[:id])
     @guest = Guest.find_by(id: params[:guest_id])
     @tour_guest = @guest.tour_guests.find_by(tour_id: @tour.id)
-    if @tour_guest.update(num_guests: params[:num_guests], user_id: params[:user_id][:id], is_confirmed: params[:is_confirmed], is_cancelled: params[:is_cancelled])
+
+    discount = Discount.find_by(id: params[:discount_id][:id])
+    ppl_to_discount = params[:discount_num_ppl].to_i
+    reservation_discount = TourGuestDiscount.find_or_create_by(tour_guest_id: @tour_guest.id)
+    reservation_discount.update(discount_id: params[:discount_id][:id].to_i, num_ppl: ppl_to_discount)
+
+    if params[:is_cancelled] == "true"
+      subtotal = 0
+    else
+      subtotal = calculateAmountOwed(@tour, @tour_guest, discount, ppl_to_discount)
+    end
+
+    if @tour_guest.update(num_guests: params[:num_guests], user_id: params[:user_id][:id], is_confirmed: params[:is_confirmed], is_cancelled: params[:is_cancelled], amount_owed: subtotal)
       redirect_to tour_path(@tour)
     else
       render "/tours/#{@tour.id}/edit_tour/#{@guest.id}"
@@ -72,6 +89,8 @@ class ToursController < ApplicationController
 
   def approve_tour
     tour = Tour.find(params[:id])
+    net = tour.calculate_net_amount
+    tour.net_amount = net
     tour.toggle(:is_approved)
     if tour.save
       # abstract this away!!
@@ -79,7 +98,7 @@ class ToursController < ApplicationController
       payments.each do |payment|
         Payment.create(amount: payment[:payment], user_id: payment[:user_id], tour_id: tour.id)
       end
-      redirect_to tours_path
+      redirect_to payment_tour_path(tour.id)
     else
       flash[:error] = "Error approving tour. Please try again."
       redirect_to tour_path(tour)
@@ -88,7 +107,8 @@ class ToursController < ApplicationController
 
   def append_note_tour
     @tour = Tour.find_by(id: params[:id])
-    @comment = Comment.new(content: params[:content], is_important: params[:is_important], noteable: @tour)
+    @user = current_user
+    @comment = Comment.new(content: params[:content], is_important: params[:is_important], noteable: @tour, user_id: @user.id)
     if @comment.save
       redirect_to tour_path(@tour)
     else
@@ -107,7 +127,8 @@ class ToursController < ApplicationController
     @guest = Guest.find_by(id: params[:guest_id])
     @tour = Tour.find_by(id: params[:id])
     @tour_guest = @guest.tour_guests.find_by(tour_id: @tour.id)
-    @comment = Comment.new(content: params[:content], is_important: params[:is_important], noteable: @tour_guest)
+    @user = current_user
+    @comment = Comment.new(content: params[:content], is_important: params[:is_important], noteable: @tour_guest, user_id: @user.id)
     if @comment.save
       redirect_to "/tours/#{@tour.id}/edit_tour/#{@guest.id}"
     else
